@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Social Innovation</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="css/plugins/metisMenu/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Timeline CSS -->
+    <link href="css/plugins/timeline.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="css/plugins/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="index.html">Social Innovation</a>
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="index.html"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li>
+                            <a href="dashboard.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a class="active" href="uploadFile.html"><i class="fa fa-edit fa-fw"></i> Upload</a>
+                        </li>
+
+                         <li>
+                            <a href="createevent.html"><i class="fa fa-edit fa-fw"></i> Create Event</a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- /.sidebar-collapse -->
+            </div>
+            <!-- /.navbar-static-side -->
+        </nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="page-header">Upload the data</h1>
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+
+           <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Upload a .xlsx file with the events data
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+
+                        <div class="form-group" id="fileTypeLevel1">
+                            <label>File Type</label>
+                            <select class="form-control" id="fileTypeLevel1Vals" onChange="onChangeTemplateType()">
+                                <option value = "0">--Select--</option>
+                                <option value = "Historic">Historic</option>
+                                <option value = "New">New</option>
+                            </select>
+                        </div>
+                        <div class="form-group hide" id="fileTypeLevel2">
+                            <label>Template Type</label>
+                            <select class="form-control" id="fileTypeLevel2Vals" onChange="onChangeTemplateTypeLevel2()">
+                                <option value = "0">--Select--</option>
+                                <option value = "Event">Event</option>
+                                <option value = "Year">Year</option>
+                            </select>
+                        </div>
+                        <div class="form-group hide" id="eventName">
+                            <label>Event Name</label>
+                            <input class="form-control" placeholder="Enter event name" name="eventName" id="eventName">
+                        </div>
+                        <div class="form-group hide" id="year">
+                            <label>Year</label>
+                            <input class="form-control" placeholder="Enter year" name="year" id="year">
+
+                        </div>
+
+                            <div class="form-group hide" id = "fileInput" name="fileInput">
+                                <input type="file">
+                            </div>
+
+
+                            <button type="button" class="btn btn-primary hide" id = "uploadButton" onClick="submitForm()">Upload</button>
+                            
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+ 
+
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery Version 1.11.0 -->
+    <script src="js/jquery-1.11.0.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="js/plugins/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/sb-admin-2.js"></script>
+
+    <!-- DataTables JavaScript -->
+    <script src="js/plugins/dataTables/jquery.dataTables.js"></script>
+    <script src="js/plugins/dataTables/dataTables.bootstrap.js"></script>
+
+
+     <script>
+    function onChangeTemplateType() {
+
+        if($('#fileTypeLevel1Vals').val() == 'Historic') {
+            hideTemplateTypeLevel2();
+            hideAll();
+            isTemplateTypeHistoric();
+        } else if($('#fileTypeLevel1Vals').val() == 'New') {
+            hideTemplateTypeLevel2();
+            hideAll();
+            isTemplateTypeEvent();
+        } else {
+            hideTemplateTypeLevel2();
+            hideAll();
+            alert("Please selet a file type.");
+        }
+    }
+
+    function onChangeTemplateTypeLevel2() {
+        hideAll();
+        if($('#fileTypeLevel2Vals').val() == 'Event') {
+            isTemplateTypeEvent();
+        } else if($('#fileTypeLevel2Vals').val() == 'Year') {
+            isTemplateTypeYear();
+        } else {
+            alert("Please selet a template type.");
+        }
+    }
+
+
+    function isTemplateTypeHistoric() {
+        $("#fileTypeLevel2").removeClass("hide");
+    }
+    function isTemplateTypeEvent() {
+        $('#eventName').removeClass("hide");
+        $('#year').removeClass("hide");
+        $("#fileInput").removeClass("hide");
+        $("#uploadButton").removeClass("hide");
+    }
+    function isTemplateTypeYear() {
+        $('#year').removeClass("hide");
+        $("#fileInput").removeClass("hide");
+        $("#uploadButton").removeClass("hide");
+
+    }
+
+    function hideTemplateTypeLevel2() {
+        if(!$('#fileTypeLevel2').hasClass("hide")) $('#fileTypeLevel2').addClass("hide");
+    }
+    function hideAll() {
+        if(!$('#eventName').hasClass("hide")) $('#eventName').addClass("hide");
+        if(!$('#year').hasClass("hide")) $('#year').addClass("hide");
+        if(!$('#fileInput').hasClass("hide")) $("#fileInput").addClass("hide");
+        if(!$('#uploadButton').hasClass("hide")) $("#uploadButton").addClass("hide");
+    }
+
+
+    function submitForm() {
+    	var data = new FormData(); 
+    	jQuery.each($('#uploadedFile')[0].files, function(i, file) { data.append('file', file); });
+		data.append('eventName',$('#eventName').val())
+		data.append('year',$('#year').val())
+    
+	$.ajax({
+								url : 'http://localhost:8080/upload?name=test',
+								data : data,
+								cache : false,
+								contentType : false,
+								processData : false,
+								type : 'POST',
+								success : function(data) {
+									alert(data);
+								}
+							});
+	}
+
+						function validateForm() {
+							var missingFileds = ''
+							var valid = true;
+							if (!$('#fileTypeLevel2').hasClass("hide")
+									&& $('#fileTypeLevel2').val() == '0') {
+								valid = false;
+								missingFileds += 'Template Type \n';
+							}
+							if (!$('#eventName').hasClass("hide")
+									&& $('#eventName').val() == '') {
+								valid = false;
+								missingFileds += 'Event Name \n';
+							}
+							if (!$('#year').hasClass("hide")
+									&& $('#year').val() == '') {
+								valid = false;
+								missingFileds += 'Event Year \n';
+							}
+							if (!$('#fileInput').hasClass("hide")
+									&& $('#fileInput').val() == '') {
+								valid = false;
+								missingFileds += 'Upload File \n';
+							}
+
+							if (!valid) {
+								alert('Please enter the below required fields:\n'
+										+ missingFileds);
+							}
+							return valid;
+						}
+					</script>
+
+</body>
+
+</html>
